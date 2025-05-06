@@ -1,2 +1,2 @@
-# Clearn-to-devops
-Begin clearn to devops 
+# Study-to-devops
+Begin study to devops 

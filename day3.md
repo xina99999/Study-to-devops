@@ -110,6 +110,33 @@ jobs:
 ```
 
 ---
+Bạn đã viết đúng gần hết, chỉ thiếu một điều **cực kỳ quan trọng**:
+👉 **Biến GitHub như `${{ github.repository }}` và `${{ github.run_id }}` không hoạt động bên trong `run: |` như bạn đang dùng.**
+
+---
+
+
+### 🟦 Discord:
+
+```yaml
+      - name: Send Discord message on failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{
+                 \"content\": \"🚨 GitHub Actions CI build failed on **${REPO}**\\n🔗 https://github.com/${REPO}/actions/runs/${RUN_ID}\"
+               }" \
+               $DISCORD_WEBHOOK
+```
+
+
+
+
 
 ## 📘 Tài liệu tham khảo:
 

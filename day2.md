@@ -105,7 +105,7 @@ Thêm vào đầu file `README.md`:
 ```markdown
 ![CI](https://github.com/your-username/devops-learning/actions/workflows/ci.yml/badge.svg)
 ```
-
+![CI](https://github.com/xina99999/node-api/actions/workflows/ci.yml/badge.svg)
 ---
 
 ## 📘 Tài liệu học thêm

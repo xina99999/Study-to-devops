@@ -1,4 +1,4 @@
-
+![CI](https://github.com/xina99999/node-api/actions/actions/workflows/ci.yml/badge.svg)
 
 ## 🗓️ **Ngày 2 – Giao Task cụ thể: Viết pipeline CI với GitHub Actions**
 

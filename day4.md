@@ -1,4 +1,4 @@
-Tuyệt vời, chào mừng bạn đến với **Ngày 4 – Học Docker cơ bản**, nền tảng quan trọng của DevOps!
+
 
 ---
 

@@ -83,7 +83,6 @@ jobs:
         run: npm test
 ```
 
-> 💡 Nếu dùng Python hoặc Laravel, mình có thể gửi file tương ứng.
 
 ---
 

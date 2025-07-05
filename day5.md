@@ -178,8 +178,8 @@ docker compose up -d --build
 
 Mở trình duyệt:
 
-* Nếu local: [http://localhost:8000](http://localhost:8000)
-* Nếu VPS: [http://your-vps-ip:8000](http://your-vps-ip:8000)
+* Nếu local: [http://localhost:80](http://localhost:80)
+* Nếu VPS: [http://your-vps-ip:80](http://your-vps-ip:80)
 
 ---
 
@@ -201,17 +201,22 @@ exit
 
 ##  🧩 **Bước 8 : Import database**
 
+```bash
+docker cp sql_laravel_nhan.sql mysql:/tmp/
+docker exec -it mysql sh -c "mysql -u root -proot laravel < /tmp/sql_laravel_nhan.sql"
+```
 
+---
 
 ## ✅ Kết quả kỳ vọng:
 
 | Mục                               | Kết quả                   |
 | --------------------------------- | ------------------------- |
-| ✅ Laravel chạy qua Docker         | Truy cập `localhost:8000` |
+| ✅ Laravel chạy qua Docker         | Truy cập `localhost:80` |
 | ✅ Dockerfile Laravel hoạt động    | `docker build` OK         |
 | ✅ Web server + PHP + DB tách biệt | 3 container rõ ràng       |
 | ✅ Có volume mount Laravel source  | Có thể code trực tiếp     |
-| ✅ Có thể deploy lên VPS           | Dùng VPS IP:8000          |
+| ✅ Có thể deploy lên VPS           | Dùng VPS IP:80          |
 
 ---
 

@@ -207,6 +207,138 @@ docker exec -it mysql sh -c "mysql -u root -proot laravel < /tmp/sql_laravel_nha
 ```
 
 ---
+# Mở rộng cài thêm SSL và cấu hình port 443 cho HTTPS
+---
+
+## ✅ Bước 9: Chuẩn bị thư mục và mount volume chứa chứng chỉ SSL
+
+Tạo thư mục chứa SSL ngoài project để dễ chia sẻ vào container:
+
+```bash
+sudo mkdir -p /etc/letsencrypt
+sudo mkdir -p /var/lib/letsencrypt
+```
+
+Chạy Certbot trực tiếp trên máy host (ngoài container):
+
+```bash
+sudo apt update
+sudo apt install certbot
+```
+
+Tạm dừng container `nginx` để giải phóng port 80:
+
+```bash
+docker stop nginx
+```
+
+Yêu cầu cấp chứng chỉ:
+
+```bash
+sudo certbot certonly --standalone -d domain_name
+```
+
+> Khi được yêu cầu nhập email và đồng ý, hãy chọn `Y` và nhập email thật để nhận thông báo hết hạn.
+
+---
+
+## ✅ Bước 10: Cấu hình Nginx cho SSL
+
+### 📄 File: `nginx/default.conf`
+
+```nginx
+# Chuyển HTTP sang HTTPS
+server {
+    listen 80;
+    server_name domain_name;
+    return 301 https://$host$request_uri;
+}
+
+# HTTPS server
+server {
+    listen 443 ssl;
+    server_name domain_name;
+
+    ssl_certificate /etc/letsencrypt/live/domain_name/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/domain_name/privkey.pem;
+
+    root /var/www/public;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
+
+---
+
+## ✅ Bước 11: Cập nhật `docker-compose.yml`
+
+Gắn volume chứa chứng chỉ vào container nginx:
+
+```yaml
+  webserver:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./laravel_source:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - app
+    networks:
+      - laravel
+```
+
+---
+
+## ✅ Bước 12: Khởi động lại Docker
+
+```bash
+docker compose down
+docker compose up -d
+```
+
+---
+
+## ✅ Bước 13: Kiểm tra HTTPS
+
+Dùng `curl` hoặc trình duyệt:
+
+```bash
+curl -v https://domain_name
+```
+
+---
+
+## ⚠️ Lưu ý:
+
+* Chứng chỉ Let's Encrypt chỉ có hiệu lực 90 ngày → bạn nên cấu hình cron tự động gia hạn hoặc thỉnh thoảng chạy lệnh:
+
+  ```bash
+  sudo certbot renew
+  ```
+
+---
+
+
 
 ## ✅ Kết quả kỳ vọng:
 

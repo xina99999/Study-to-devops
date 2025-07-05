@@ -33,7 +33,7 @@ laravel-project/
 ├── nginx/
 │   └── default.conf
 ├── .env
-├── src/  → Laravel source code
+├── laravel_source/  → Laravel source code
 ```
 
 ---
@@ -42,32 +42,35 @@ laravel-project/
 
 Tạo `Dockerfile` trong thư mục Laravel:
 
-```Dockerfile
-FROM php:8.1-fpm
+```FROM php:8.2-fpm
 
-# Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential libpng-dev libjpeg-dev libonig-dev libxml2-dev zip unzip curl git \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libpq-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working dir
 WORKDIR /var/www
 
-# Copy app source code
-COPY . .
-
-# Install dependencies
-RUN composer install
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
-
-EXPOSE 9000
 CMD ["php-fpm"]
+
+
 ```
 
 ---
@@ -76,10 +79,11 @@ CMD ["php-fpm"]
 
 Tạo `nginx/default.conf`:
 
-```nginx
-server {
+```server {
     listen 80;
     index index.php index.html;
+    server_name localhost;
+
     root /var/www/public;
 
     location / {
@@ -87,63 +91,73 @@ server {
     }
 
     location ~ \.php$ {
+        include fastcgi_params;
         fastcgi_pass app:9000;
         fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME /var/www/public$fastcgi_script_name;
-        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+    }
+
+    location ~ /\.ht {
+        deny all;
     }
 }
+
 ```
 
 ---
 
 ## 🧩 **Bước 3: docker-compose.yml**
 
-```yaml
-version: '3.8'
+```version: '3.8'
 
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: laravel-app
     container_name: laravel_app
     restart: unless-stopped
-    working_dir: /var/www
     volumes:
-      - ./src:/var/www
+      - ./laravel_source:/var/www
     depends_on:
-      - db
+      - mysql
+    networks:
+      - laravel
 
-  web:
-    image: nginx:latest
-    container_name: nginx_web
+  webserver:
+    image: nginx:alpine
+    container_name: nginx
     restart: unless-stopped
     ports:
-      - "8000:80"
+      - "80:80"
     volumes:
-      - ./src:/var/www
+      - ./laravel_source:/var/www
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+    networks:
+      - laravel
 
-  db:
+  mysql:
     image: mysql:5.7
-    container_name: mysql_db
+    container_name: mysql
     restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - dbdata:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+networks:
+  laravel:
 
 volumes:
-  dbdata:
+  mysql_data:
+
 ```
 
 ---
@@ -151,7 +165,7 @@ volumes:
 ## 🧩 **Bước 4: Copy Laravel source vào thư mục `src/`**
 
 ```bash
-mv your-laravel-folder ./src
+mv your-laravel-folder ./laravel_source
 ```
 
 ---
@@ -183,6 +197,11 @@ exit
 ```
 
 ---
+## 🧩 **Bước 7 : Di chuyển file .env vào trong larvarel_source**
+
+##  🧩 **Bước 8 : Import database**
+
+
 
 ## ✅ Kết quả kỳ vọng:
 

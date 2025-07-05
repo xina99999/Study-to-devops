@@ -6,7 +6,7 @@
 
 * Viết `Dockerfile` cho Laravel app
 * Tạo container Laravel + PHP + nginx + MySQL
-* Test chạy Laravel trên `localhost:8000` hoặc IP VPS
+* Test chạy Laravel trên `localhost:80` hoặc IP VPS
 
 ---
 

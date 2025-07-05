@@ -222,6 +222,3 @@ docker exec -it mysql sh -c "mysql -u root -proot laravel < /tmp/sql_laravel_nha
 
 
 
-Nếu bạn muốn, mình có thể tạo **template repo GitHub Laravel + Docker + Nginx** sẵn cho bạn clone.
-
-Bạn muốn triển khai trực tiếp trên VPS ngay hôm nay chứ? Nếu có, mình sẽ hỗ trợ từng bước cho bạn lên production!

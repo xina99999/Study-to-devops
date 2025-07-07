@@ -38,12 +38,12 @@ docker login
 Giả sử bạn có Dockerfile trong thư mục `project_laravel`:
 
 ```bash
-docker build -t xnhan/laravel-app:latest .
+docker build -t username/laravel-app:latest .
 ```
 
 > Ghi chú:
 >
-> * `xnhan` là username DockerHub
+> * `username` là username DockerHub
 > * `laravel-app` là tên image
 > * `:latest` là tag (có thể dùng version như `:v1`)
 
@@ -52,18 +52,18 @@ docker build -t xnhan/laravel-app:latest .
 #### 🔹 Bước 4: Push Image lên DockerHub
 
 ```bash
-docker push xnhan/laravel-app:latest
+docker push username/laravel-app:latest
 ```
 
 Nếu thành công bạn sẽ thấy image xuất hiện tại:
-👉 [https://hub.docker.com/repository/docker/xnhan/laravel-app](https://hub.docker.com/repository/docker/xnhan/laravel-app)
+👉 https://hub.docker.com/repository/docker/username/laravel-app
 
 ---
 
 #### 🔹 Bước 5: Xoá image local (để kiểm tra pull lại)
 
 ```bash
-docker rmi xnhan/laravel-app:latest
+docker rmi username/laravel-app:latest
 ```
 
 ---
@@ -71,8 +71,8 @@ docker rmi xnhan/laravel-app:latest
 #### 🔹 Bước 6: Pull Image từ DockerHub
 
 ```bash
-docker pull xnhan/laravel-app:latest
-docker run -d --name laravel_app -p 8000:80 xnhan/laravel-app:latest
+docker pull username/laravel-app:latest
+docker run -d --name laravel_app -p 8000:80 username/laravel-app:latest
 ```
 
 ---
@@ -82,8 +82,8 @@ docker run -d --name laravel_app -p 8000:80 xnhan/laravel-app:latest
 * Khi cập nhật Dockerfile, build lại image với tag mới:
 
 ```bash
-docker build -t xnhan/laravel-app:v2 .
-docker push xnhan/laravel-app:v2
+docker build -t username/laravel-app:v2 .
+docker push username/laravel-app:v2
 ```
 
 * Bạn có thể:
@@ -91,13 +91,13 @@ docker push xnhan/laravel-app:v2
   * Gắn lại tag `latest` nếu cần:
 
     ```bash
-    docker tag xnhan/laravel-app:v2 xnhan/laravel-app:latest
-    docker push xnhan/laravel-app:latest
+    docker tag username/laravel-app:v2 xnhan/laravel-app:latest
+    docker push username/laravel-app:latest
     ```
   * Xoá image local:
 
     ```bash
-    docker rmi xnhan/laravel-app:v1
+    docker rmi username/laravel-app:v1
     ```
 
 ---

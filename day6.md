@@ -117,4 +117,4 @@ docker push username/laravel-app:v2
 
 ---
 
-Nếu bạn muốn mình viết mẫu `Dockerfile`, `docker-compose.yml`, hoặc hướng dẫn CI/CD tự động build + push từ GitHub, hãy nói nhé.
+

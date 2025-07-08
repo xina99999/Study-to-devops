@@ -190,10 +190,3 @@ Với **7 bước trên trong 1 ngày**, bạn đã hoàn thành:
 
 ---
 
-Nếu bạn muốn mình gửi:
-
-* Mẫu repo Laravel + GitHub Actions
-* Dockerfile chuẩn Laravel + MySQL + Nginx
-* Hoặc hướng dẫn deploy lên VPS qua SSH
-
-👉 Chỉ cần nói, mình hỗ trợ tiếp luôn!

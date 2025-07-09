@@ -1,6 +1,6 @@
 
 
-## 🗓️ Ngày 12 – **Cài Node Exporter và cấu hình Prometheus để giám sát CPU, RAM, Disk**
+## 🗓️ Ngày 11 – **Cài Node Exporter và cấu hình Prometheus để giám sát CPU, RAM, Disk**
 
 ---
 
@@ -52,7 +52,7 @@ docker compose up -d
 Truy cập trên trình duyệt:
 
 ```
-http://<EC2-IP>:9100/metrics
+http://<IP>:9100/metrics
 ```
 
 Nếu hiển thị nhiều dòng như `node_cpu_seconds_total`, `node_memory_MemAvailable_bytes`,... nghĩa là đã chạy thành công.
@@ -142,4 +142,3 @@ Vào tab **Graph**, thử các truy vấn:
 * Kết nối với Prometheus.
 * Import dashboard giám sát CPU, RAM, Disk.
 
-Nếu bạn muốn mình viết tiếp **Ngày 13: Cài Grafana + Kết nối Prometheus + Dashboard**, chỉ cần nhắn nhé!

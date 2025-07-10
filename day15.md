@@ -52,12 +52,18 @@ http://<IP>:3000
   "content": "⚠️ Alert: ${ruleName} is now ${state} - ${message}"
 }
 ```
+![Screenshot from 2025-07-10 17-25-11](https://github.com/user-attachments/assets/477cc315-98ef-458c-9a66-a59df1f36431)
 
 ---
 
 ### 🔹 2.2. Gửi cảnh báo qua Email (SMTP)
 
 #### a. Cấu hình SMTP trong `grafana.ini` (nếu dùng self-hosted):
+## Vào docker grafana chạy lệnh sau
+```ini
+/etc/grafana/grafana.ini
+```
+## Kiếm phần smtp điền thông tin sau
 
 ```ini
 [smtp]

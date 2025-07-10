@@ -2,69 +2,62 @@
 
 ---
 
-## 🗓 **Ngày 15 – Cảnh báo Grafana + gửi Telegram/Email**
+## 🗓 **Ngày 15 – Cảnh báo Grafana + gửi Discord/Email**
 
 ### 🎯 **Mục tiêu**:
 
-* Tạo các **Alert Rule** trong Grafana dựa trên dữ liệu từ Prometheus.
-* **Gửi cảnh báo tự động** khi vượt ngưỡng CPU, RAM, disk...
-* Tích hợp **Telegram Bot API** hoặc **SMTP Email** để gửi cảnh báo ra ngoài.
+* Cấu hình hệ thống cảnh báo (Alerting) trong Grafana.
+* Tạo **Contact Points** gửi cảnh báo khi vượt ngưỡng CPU, RAM, v.v.
+* Gửi thông báo cảnh báo qua **Discord Webhook** hoặc **Email (SMTP)**.
 
 ---
 
 ## 🧩 **1. Kích hoạt Alerting trong Grafana**
 
-> Grafana >= v8+ đã có sẵn alerting system mới.
+> Grafana từ v8 trở lên có alerting system mới tích hợp trực tiếp trong GUI.
 
-### Bước 1: Truy cập Grafana
+### Truy cập:
 
-```
+```http
 http://<IP>:3000
 ```
 
-Login bằng:
+Đăng nhập:
 
-* Username: `admin`
-* Password: `admin` (hoặc như bạn đã đổi)
-
----
-
-## ⚙️ **2. Tạo Contact Point (Telegram hoặc Email)**
-
-### 🔹 2.1. Telegram Alert
-
-#### a. Tạo Telegram Bot:
-
-1. Mở Telegram, tìm `@BotFather`.
-2. Gửi lệnh `/newbot`.
-3. Đặt tên và nhận **Bot Token**.
-
-#### b. Lấy Chat ID:
-
-1. Nhắn 1 tin nhắn đến bot bạn vừa tạo.
-2. Truy cập:
-
-```
-https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates
-```
-
-3. Tìm `chat.id` từ JSON trả về.
-
-#### c. Thêm Telegram vào Grafana:
-
-* Vào **Alerting > Contact Points > New contact point**
-* Chọn **Telegram**.
-* Nhập:
-
-  * Bot Token
-  * Chat ID
-  * Tin nhắn tùy chỉnh: `⚠️ Alert: ${ruleName} - ${state}`
+* User: `admin`
+* Pass: `admin` (hoặc pass đã thay)
 
 ---
 
-### 🔹 2.2. SMTP Email Alert
+## ⚙️ **2. Tạo Contact Point (Discord hoặc Email)**
 
-#### a. Cấu hình `grafana.ini` (nếu chưa có GUI email):
+### 🔹 2.1. Gửi cảnh báo qua Discord Webhook
+
+#### a. Tạo Webhook trên Discord:
+
+1. Truy cập Discord > Chọn server > Kênh text > `Edit Channel`.
+2. Vào tab **Integrations** > **Webhooks** > `New Webhook`.
+3. Đặt tên & chọn kênh > `Copy Webhook URL`.
+
+#### b. Thêm Contact Point trong Grafana:
+
+1. Vào menu: **Alerting > Contact Points > New contact point**.
+2. Chọn **Webhook**.
+3. Dán Webhook URL Discord vào trường `URL`.
+4. Content type: `application/json`
+5. Mẫu nội dung (JSON template):
+
+```json
+{
+  "content": "⚠️ Alert: ${ruleName} is now ${state} - ${message}"
+}
+```
+
+---
+
+### 🔹 2.2. Gửi cảnh báo qua Email (SMTP)
+
+#### a. Cấu hình SMTP trong `grafana.ini` (nếu dùng self-hosted):
 
 ```ini
 [smtp]
@@ -77,67 +70,66 @@ from_name = Grafana Alerts
 skip_verify = false
 ```
 
-> Sau đó **restart Grafana**:
+> Sau đó **khởi động lại container Grafana**:
 
 ```bash
 docker restart <grafana_container_name>
 ```
 
-#### b. Tạo Contact Point
+#### b. Tạo Contact Point trong Grafana:
 
-* Vào **Alerting > Contact Points**
-* Chọn **Email**
-* Nhập email nhận cảnh báo
+1. Vào **Alerting > Contact Points > New contact point**
+2. Chọn loại `Email`
+3. Nhập địa chỉ email nhận cảnh báo
 
 ---
 
 ## 📊 **3. Tạo Alert Rule trên Dashboard**
 
-### Ví dụ: CPU usage alert
+Ví dụ: Cảnh báo khi CPU vượt 80%
 
-#### a. Vào dashboard chứa biểu đồ CPU
+1. Mở Dashboard > chọn biểu đồ CPU
+2. Click biểu đồ → `Edit`
+3. Vào tab **Alert** (hoặc “Alerting”)
+4. Thêm điều kiện:
 
-#### b. Click vào biểu đồ → **Edit**
+   * Ví dụ:
 
-#### c. Chuyển sang tab **Alert** (hoặc “Alerting”)
-
-#### d. Thêm điều kiện:
-
-* Ví dụ:
-
-  * Expression: `avg(rate(node_cpu_seconds_total{mode!="idle"}[1m])) * 100`
-  * If `value` is above `80` for `1m`
-
-#### e. Gán Alert vào **Contact Point** đã tạo (Telegram/Email)
-
-#### f. Bấm **Save**
+     ```promQL
+     100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+     ```
+   * If value > `80` trong 1 phút
+5. Liên kết với **Contact Point** (Discord hoặc Email)
+6. Bấm **Save**
 
 ---
 
-## 🧪 **4. Kiểm tra và mô phỏng cảnh báo**
+## 🧪 **4. Mô phỏng cảnh báo**
 
-* Giả lập CPU cao bằng cách chạy:
+* Tăng tải CPU tạm thời để kiểm tra:
 
 ```bash
 yes > /dev/null &
 ```
 
-* Quan sát biểu đồ và chờ alert được kích hoạt.
+* Quan sát biểu đồ và xem cảnh báo có được gửi đến Discord/Email không.
 
 ---
 
 ## ✅ **Kết quả mong đợi**
 
-* Khi CPU hoặc RAM vượt ngưỡng, **cảnh báo tự động được gửi** về Telegram hoặc Email.
-* Có thể quản lý nhiều alert rule trên nhiều dashboard.
+* Khi vượt ngưỡng CPU hoặc RAM:
+
+  * Một thông báo cảnh báo gửi đến **Discord Webhook**.
+  * Hoặc email được gửi đến địa chỉ đã đăng ký.
 
 ---
 
-## 📦 Ghi chú thêm
+## 📦 Ghi chú nâng cao
 
-* Grafana cũng hỗ trợ Slack, Webhook, Discord, Opsgenie, PagerDuty, v.v.
-* Có thể export/import alert rules.
-* Alerts được lưu trong **SQLite DB** nội bộ của Grafana hoặc database backend nếu có.
+* Discord Webhook có thể kèm thêm embed, hình ảnh...
+* Có thể thiết lập nhiều loại cảnh báo cho từng dashboard: Disk, Load, Container count...
+* Grafana còn hỗ trợ: Slack, Webhook, PagerDuty, Opsgenie, VictorOps...
 
 ---
 

@@ -18,7 +18,7 @@
 
 ### Bước 1: Truy cập Grafana
 
-```http
+```
 http://<IP>:3000
 ```
 

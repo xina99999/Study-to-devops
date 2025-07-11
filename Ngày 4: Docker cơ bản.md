@@ -2,7 +2,7 @@
 
 ---
 
-## 🗓️ **Ngày 4 – Giao Task cụ thể: Docker cơ bản**
+## 🗓️ **Ngày 4: Docker cơ bản**
 
 ### 🎯 **Mục tiêu:**
 

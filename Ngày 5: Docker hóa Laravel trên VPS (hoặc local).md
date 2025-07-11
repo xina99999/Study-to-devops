@@ -1,6 +1,6 @@
 
 
-## 🗓️ **Ngày 5 – Docker hóa Laravel trên VPS (hoặc local)**
+## 🗓️ **Ngày 5: Docker hóa Laravel trên VPS (hoặc local)**
 
 ### 🎯 Mục tiêu:
 

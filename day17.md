@@ -67,7 +67,7 @@ Vào GitHub repo → **Settings → Secrets and variables → Actions → New re
 Tạo file `.github/workflows/deploy.yml` trong Laravel repo:
 
 ```yaml
-name: Deploy Laravel to VPS via SSH
+name: Deploy Laravel via SSH
 
 on:
   push:
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Setup SSH Agent
@@ -87,14 +87,27 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy to VPS
+      - name: SSH into VPS and deploy
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p $PORT $USERNAME@$HOST << 'EOF'
             cd ~/project_laravel
+
+            echo "Pulling latest code from GitHub..."
             git pull origin main
+
+            echo "Bringing down old containers..."
             docker compose down
+
+            echo "Building and starting new containers..."
             docker compose up -d --build
+
+            echo "Deployment completed."
           EOF
+
 ```
 
 ---

@@ -2,7 +2,7 @@
 
 ---
 
-### 🗓 Ngày 13: Cài Grafana + Kết nối Prometheus + Dashboard
+### 🗓 Ngày 12: Cài Grafana + Kết nối Prometheus + Dashboard
 
 ---
 

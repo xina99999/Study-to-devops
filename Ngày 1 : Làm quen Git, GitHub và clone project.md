@@ -1,6 +1,6 @@
 
 
-## 🗓️ **Ngày 1 – Giao Task cụ thể: Làm quen Git, GitHub và clone project**
+## 🗓️ **Ngày 1 : Làm quen Git, GitHub và clone project**
 
 ### 🎯 Mục tiêu cuối ngày:
 

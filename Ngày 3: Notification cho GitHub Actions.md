@@ -1,5 +1,5 @@
 
-## 🗓️ **Ngày 3 – Giao Task cụ thể: Notification cho GitHub Actions**
+## 🗓️ **Ngày 3: Notification cho GitHub Actions**
 
 ### 🎯 Mục tiêu:
 

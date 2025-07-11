@@ -152,3 +152,4 @@ Hoặc mở trình duyệt vào `http://<VPS-IP>:<PORT>` để xem Laravel site 
 * Không commit key vào repo.
 * Key này chỉ dùng để deploy, không dùng để đăng nhập chính.
 
+<img width="1775" height="897" alt="Screenshot from 2025-07-11 10-27-22" src="https://github.com/user-attachments/assets/b8045e72-8dbc-4a26-83cf-b3e1b095d59e" />

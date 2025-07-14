@@ -99,7 +99,7 @@ Tài liệu dành cho mục tiêu học tập cá nhân, chia sẻ không lợi 
 ---
 ## 📘 Mở rộng
 Tôi có một dự án K8s 
-(Tự học K8s)[https://github.com/xina99999/k8s-laravel-monitor.git]
+[Tự học K8s](https://github.com/xina99999/k8s-laravel-monitor.git)
 
 ## 💬 Góp ý?
 

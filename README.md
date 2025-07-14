@@ -26,7 +26,6 @@ Dự án này là nhật ký học tập và thực hành DevOps trong 5 tuần,
 | 4    | Học Docker cơ bản: build, run, port mapping        | Làm quen Docker CLI                      |
 | 5    | Viết Dockerfile cho project, test local            | Đóng gói ứng dụng Laravel với Docker     |
 
-📎 Chi tiết xem tại [`docs/week01.md`](docs/week01.md)
 
 ---
 
@@ -40,7 +39,7 @@ Dự án này là nhật ký học tập và thực hành DevOps trong 5 tuần,
 | 9    | Pull image từ DockerHub, run thử, mở port           | Deploy thủ công                          |
 | 10   | Viết tài liệu triển khai EC2 & xử lý lỗi firewall   | Mô tả rõ ràng hạ tầng triển khai         |
 
-📎 Chi tiết xem tại [`docs/week02.md`](docs/week02.md)
+
 
 ---
 
@@ -54,7 +53,6 @@ Dự án này là nhật ký học tập và thực hành DevOps trong 5 tuần,
 | 14   | Cấu hình lưu config + persistent volume             | Làm quen với volumes                     |
 | 15   | Viết hướng dẫn sử dụng & báo cáo                    | Trình bày quy trình giám sát             |
 
-📎 Chi tiết xem tại [`docs/week03.md`](docs/week03.md)
 
 ---
 
@@ -68,7 +66,7 @@ Dự án này là nhật ký học tập và thực hành DevOps trong 5 tuần,
 | 19   | Test pipeline toàn diện, xử lý lỗi                  | Quản lý lifecycle container              |
 | 20   | Tạo script rollback khi deploy lỗi                  | Tư duy production-safe                   |
 
-📎 Chi tiết xem tại [`docs/week04.md`](docs/week04.md)
+
 
 ---
 
@@ -82,7 +80,7 @@ Dự án này là nhật ký học tập và thực hành DevOps trong 5 tuần,
 | 24   | Fix bug cuối, hỏi mentor (nếu cần)                  | Hoàn thiện sản phẩm                      |
 | 25   | Demo trước team + nhận feedback                     | Kết thúc giai đoạn đào tạo               |
 
-📎 Chi tiết xem tại [`docs/week05.md`](docs/week05.md)
+
 
 ---
 
